@@ -5,7 +5,7 @@ const WebSocket = require("ws");
 const fs = require('fs');
 const { createClient, LiveTranscriptionEvents } = require("@deepgram/sdk");
 const dotenv = require("dotenv");
-const {play , initialize} = require('./models/playht');
+const {play , initialize} = require('./models/tts');
 // const {neets} = require('./models/neets');
 
 
@@ -23,8 +23,10 @@ let sid2=0;
 let pl1=0;
 let pl2=0;
 
-if(!process.env.DEEPGRAM_API_KEY && !process.env.GROQ_API_KEY && !process.env.PLAY_API_KEY && !process.env.PLAY_USERID){
-    console.error('Please provide all the required keys in the .env file')
+// Core keys are always required. TTS keys are validated by the selected
+// provider in initialize() (see models/tts.js), so they aren't checked here.
+if(!process.env.DEEPGRAM_API_KEY || !process.env.GROQ_API_KEY){
+    console.error('Please provide DEEPGRAM_API_KEY and GROQ_API_KEY in the env file')
     process.exit(1);
 }
 
